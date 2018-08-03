@@ -1,5 +1,6 @@
 const path = require('path')
 const html = require('html-webpack-plugin')
+const CustomWebpackHook = require('./customWebpackHook')
 
 module.exports = (env = {}, args = {}) => {
   return {
@@ -101,7 +102,8 @@ module.exports = (env = {}, args = {}) => {
       new html({
         template: './public/index.html',
         filename: './index.html'
-      })
+      }),
+      new CustomWebpackHook()
     ],
     output: {
       publicPath: '/',
@@ -109,12 +111,6 @@ module.exports = (env = {}, args = {}) => {
     },
     resolve: {
       extensions: ['.js', '.css', '.jsx'],
-      alias: {
-        '~auth': path.resolve(__dirname, 'src/auth'),
-        '~securedContent': path.resolve(__dirname, 'src/securedContent'),
-        '~templateContents': path.resolve(__dirname, 'src/securedContent/template'),
-        '~helpers': path.resolve(__dirname, 'src/helpers')
-      }
     }
   }
 }
