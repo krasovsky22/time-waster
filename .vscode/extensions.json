@@ -1,0 +1,32 @@
+{
+	// See http://go.microsoft.com/fwlink/?LinkId=827846
+	// for the documentation about the extensions.json format
+	"recommendations": [
+		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+		"2gua.rainbow-brackets",
+		"carlosjs23.vscode-yarn-script",
+		"aaron-bond.better-comments",
+		"christian-kohler.npm-intellisense",
+		"christian-kohler.path-intellisense",
+		"dbaeumer.vscode-eslint",
+		"dsznajder.es7-react-js-snippets",
+		"eg2.vscode-npm-script",
+		"gamunu.vscode-yarn",
+		"henry-li.vscode-import-formatter",
+		"jasonnutter.search-node-modules",
+		"jawandarajbir.react-vscode-extension-pack",
+		"leizongmin.node-module-intellisense",
+		"moppitz.vscode-extension-auto-import",
+		"msjsdiag.debugger-for-chrome",
+		"NuclleaR.vscode-extension-auto-import",
+		"pranaygp.vscode-css-peek",
+		"shaharkazaz.git-merger",
+		"shardulm94.trailing-spaces",
+		"spearmootz.vscode-auto-install",
+		"steoates.autoimport",
+		"walter-ribeiro.full-react-snippets",
+		"wix.vscode-import-cost",
+		"xabikos.JavaScriptSnippets",
+		"xabikos.ReactSnippets"
+	]
+}
