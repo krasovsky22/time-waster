@@ -15,8 +15,6 @@ class CustomWebpackHook {
 
     compiler.hooks.watchClose.tap('watchClose', () => {
       const spentTime = Date.now() - this.startTime
-      console.log('RECALCULATIONSDASDASDSAD')
-
       const relativeOutputPath = path.relative(process.cwd(), 'timeSpent.txt')
       try {
         fs.appendFileSync(relativeOutputPath.split('?')[0], spentTime + '\r\n')
