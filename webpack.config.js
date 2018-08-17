@@ -13,9 +13,9 @@ module.exports = (env = {}, args = {}) => {
           use: {
             loader: 'babel-loader',
             query: {
-              presets: ['react']
-            }
-          }
+              presets: ['react'],
+            },
+          },
         },
         {
           test: /\.jsx$/,
@@ -23,43 +23,43 @@ module.exports = (env = {}, args = {}) => {
           use: {
             loader: 'babel-loader',
             query: {
-              presets: ['react']
-            }
-          }
+              presets: ['react'],
+            },
+          },
         },
         {
           test: /\.(scss)$/,
           use: [
             {
-              loader: 'style-loader' // inject CSS to page
+              loader: 'style-loader', // inject CSS to page
             },
             {
-              loader: 'css-loader' // translates CSS into CommonJS modules
+              loader: 'css-loader', // translates CSS into CommonJS modules
             },
             {
               loader: 'postcss-loader', // Run post css actions
               options: {
-                plugins: function () {
+                plugins: function() {
                   // post css plugins, can be exported to postcss.config.js
                   return [require('precss'), require('autoprefixer')]
-                }
-              }
+                },
+              },
             },
             {
-              loader: 'sass-loader' // compiles SASS to CSS
-            }
-          ]
+              loader: 'sass-loader', // compiles SASS to CSS
+            },
+          ],
         },
         {
           test: /\.html$/,
           use: {
             loader: 'html-loader',
-            options: { minimize: true }
-          }
+            options: { minimize: true },
+          },
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.ico$/,
@@ -67,50 +67,50 @@ module.exports = (env = {}, args = {}) => {
           use: {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]'
-            }
-          }
+              name: '[name].[ext]',
+            },
+          },
         },
         {
-          test: /\.(gif|png|jpe?g|svg)$/i,
+          test: /\.(gif|png|jpe?g|svg|txt)$/i,
           use: [
             'file-loader',
             {
               loader: 'image-webpack-loader',
               options: {
-                bypassOnDebug: true
-              }
-            }
-          ]
+                bypassOnDebug: true,
+              },
+            },
+          ],
         },
         {
           test: /\.(otf|eot|ttf|woff|woff2)$/,
           use: {
             loader: 'url-loader',
             options: {
-              limit: 10000
-            }
-          }
-        }
-      ]
+              limit: 10000,
+            },
+          },
+        },
+      ],
     },
     devServer: {
       port: 3000,
-      historyApiFallback: true
+      historyApiFallback: true,
     },
     plugins: [
       new html({
         template: './public/index.html',
-        filename: './index.html'
+        filename: './index.html',
       }),
-      new CustomWebpackHook()
+      new CustomWebpackHook(),
     ],
     output: {
       publicPath: '/',
-      filename: '[name].bundle.js'
+      filename: '[name].bundle.js',
     },
     resolve: {
       extensions: ['.js', '.css', '.jsx'],
-    }
+    },
   }
 }
