@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-import timeSpentFile from '../timeSpent.txt'
+import timeSpentFile from '../../timeSpent.txt'
 
 class Footer extends React.Component {
   constructor() {
