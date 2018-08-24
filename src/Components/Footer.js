@@ -1,29 +1,38 @@
 import React from 'react'
 import axios from 'axios'
+import firebase from './../Firebase'
 
 import timeSpentFile from '../../timeSpent.txt'
 
 class Footer extends React.Component {
   constructor() {
     super()
-    this.state = {
-      time_spent: {
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-      },
-    }
+    this.state = { time_spent: [] }
   }
 
-  async componentDidMount() {
-    const fileData = await axios.get(timeSpentFile)
-    const msSpent = fileData.data.split('\n').reduce((total, num) => {
-      const number = parseInt(num) || 0
-      return parseInt(total) + parseInt(number)
-    })
+  componentDidMount() {
+    const itemsRef = firebase.database().ref('development_time')
+    itemsRef.on('value', snapshot => {
+      let items = snapshot.val()
+      let msTime = 0
 
-    const string = this.convertMS(msSpent)
-    this.setState({ time_spent: this.convertMS(msSpent) })
+      let timeArr = []
+      let key = 0
+      for (let item in items) {
+        const { user, time } = items[item]
+
+        const valueInArray = timeArr.find(value => value.user == user)
+        if (valueInArray) {
+          const key = timeArr.indexOf(valueInArray)
+          valueInArray['time'] += parseInt(time)
+          timeArr[key] = valueInArray
+        } else {
+          timeArr.push({ user, time: parseInt(time) })
+        }
+      }
+
+      this.setState({ time_spent: timeArr })
+    })
   }
 
   convertMS = msTime => {
@@ -41,16 +50,22 @@ class Footer extends React.Component {
 
   //
   render() {
+    const that = this
+    const timeBar = this.state.time_spent.map((value, key) => {
+      const { hours, minutes, seconds } = that.convertMS(value.time)
+      return (
+        <div key={key}>
+          {hours}
+          h, {minutes}
+          m, {seconds}s ({value.user})
+        </div>
+      )
+    })
+
     return (
       <footer className="footer">
         <div className="container">
-          <span className="text-muted">
-            Time was wasted: {this.state.time_spent.hours}
-            h,&nbsp;
-            {this.state.time_spent.minutes}
-            m,&nbsp;
-            {this.state.time_spent.seconds}s
-          </span>
+          <span className="text-muted">{timeBar}</span>
         </div>
       </footer>
     )

@@ -1,11 +1,21 @@
 const path = require('path')
 const fs = require('fs')
+var dotenv = require('dotenv')
+dotenv.load()
+
+const firebase = require('./src/Firebase')
+
+const user = process.env.USER
 
 class CustomWebpackHook {
   constructor(options) {
     this.options = options
     this.startTime = 0
+
+    //initialize database sef
+    this.fireBaseRef = firebase.database().ref('development_time')
   }
+
   apply(compiler) {
     compiler.hooks.watchRun.tap('watchRun', () => {
       if (this.startTime === 0) {
@@ -15,9 +25,9 @@ class CustomWebpackHook {
 
     compiler.hooks.watchClose.tap('watchClose', () => {
       const spentTime = Date.now() - this.startTime
-      const relativeOutputPath = path.relative(process.cwd(), 'timeSpent.txt')
       try {
-        fs.appendFileSync(relativeOutputPath.split('?')[0], spentTime + '\r\n')
+        //push into firebase db
+        this.fireBaseRef.push({ user, time: spentTime })
       } catch (error) {
         console.log('ERROR', error)
       }
