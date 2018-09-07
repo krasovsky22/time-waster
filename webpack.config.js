@@ -2,6 +2,8 @@ const path = require('path')
 const html = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
+const { styles } = require('@ckeditor/ckeditor5-dev-utils')
+
 const CustomWebpackHook = require('./customWebpackHook')
 
 module.exports = (env = {}, args = {}) => {
@@ -10,24 +12,9 @@ module.exports = (env = {}, args = {}) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            query: {
-              presets: ['react'],
-            },
-          },
-        },
-        {
           test: /\.jsx$/,
           exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            query: {
-              presets: ['react'],
-            },
-          },
+          use: [{ loader: 'babel-loader' }],
         },
         {
           test: /\.(scss)$/,
@@ -60,7 +47,28 @@ module.exports = (env = {}, args = {}) => {
           },
         },
         {
+          test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
+          use: [
+            {
+              loader: 'style-loader',
+              options: {
+                singleton: true,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: styles.getPostCssConfig({
+                themeImporter: {
+                  themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
+                },
+                minify: true,
+              }),
+            },
+          ],
+        },
+        {
           test: /\.css$/,
+          exclude: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
           use: ['style-loader', 'css-loader'],
         },
         {
@@ -74,7 +82,7 @@ module.exports = (env = {}, args = {}) => {
           },
         },
         {
-          test: /\.(gif|png|jpe?g|svg|txt)$/i,
+          test: /\.(gif|png|jpe?g|txt)$/i,
           use: [
             'file-loader',
             {
@@ -84,6 +92,10 @@ module.exports = (env = {}, args = {}) => {
               },
             },
           ],
+        },
+        {
+          test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+          use: ['raw-loader'],
         },
         {
           test: /\.(otf|eot|ttf|woff|woff2)$/,
@@ -113,7 +125,10 @@ module.exports = (env = {}, args = {}) => {
       filename: '[name].bundle.js',
     },
     resolve: {
-      extensions: ['.js', '.css', '.jsx'],
+      extensions: ['.jsx', '.js', '.css'],
+    },
+    optimization: {
+      runtimeChunk: 'single',
     },
   }
 }
