@@ -27,11 +27,17 @@ import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalterna
 
 import Table from '@ckeditor/ckeditor5-table/src/table'
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar'
+import AmbryDataProcessor from './AmbryDataProcessor'
+
+function Markdown(editor) {
+  editor.data.processor = new AmbryDataProcessor()
+}
 
 export default class AmbryEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
 AmbryEditor.builtinPlugins = [
+  Markdown,
   EssentialsPlugin,
   AutoformatPlugin,
   BoldPlugin,

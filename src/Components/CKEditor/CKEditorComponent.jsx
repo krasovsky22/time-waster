@@ -19,7 +19,9 @@ class CKEditorComponent extends Component {
   }
 
   clickButton = () => {
-    this.ambryEditor.setData('<i>Hello World</i>')
+    const data = '<html><body>{{#if val}}other-class{{/if}}</body></html>'
+    console.log(data)
+    this.ambryEditor.setData(data)
   }
 
   clickGetButton = () => {
